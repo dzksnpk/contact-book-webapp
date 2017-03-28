@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>list of contacts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h3>List of contacts: </h3>
+	<p th:each="contact: ${contacts}">
+	<p th:text="'id: ' + ${contact.id}" />
+    <p th:text="'name: ' + ${contact.name}" />
+    <p th:text="'surname: ' + ${contact.surname}" />
+    <p th:text="'email: ' + ${contact.email}" />
+    <p th:text="'phone number: ' + ${contact.phoneNumber}" />
+		<p>---------------------------------------------------------</p>
+	</p>
+</body>
+</html>

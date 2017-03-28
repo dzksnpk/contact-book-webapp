@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>add contact</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+		<form th:action="@{/delete}" th:object="${contact}" method="post">
+            type surname:<input type="text" th:field="${contact.surname}" />
+            <button type="submit">Delete</button>
+        </form>
+</body>
+</html>
