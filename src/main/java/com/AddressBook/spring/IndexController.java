@@ -7,16 +7,21 @@ import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class IndexController implements ErrorController {
 
+	private final ContactRepository contactRep;
+
 	@Autowired
-	private ContactRepository contactRep;
+	private IndexController(ContactRepository contactRep) {
+		this.contactRep = contactRep;
+	}
 
 	private static final String PATH = "/error";
 
@@ -30,12 +35,12 @@ public class IndexController implements ErrorController {
 		return PATH;
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@GetMapping("/")
 	public String index(Contact contact) {
 		return "index";
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	@GetMapping("/add")
 	public String contactForm(@Valid Contact contact, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			return "index";
@@ -45,49 +50,54 @@ public class IndexController implements ErrorController {
 		return "add";
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@PostMapping("/add")
 	public String result(@ModelAttribute Contact contact) {
 
-		contactRep.save(
-				new Contact(contact.getName(), contact.getSurname(), contact.getEmail(), contact.getPhoneNumber()));
+		contactRep.save(new Contact(contact.getId(), contact.getName(), contact.getSurname(), contact.getEmail(),
+				contact.getPhoneNumber()));
 
 		return "result";
 	}
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@GetMapping("/list")
 	public String showAllContacts(Contact contact, Model model) {
 		model.addAttribute("contacts", contactRep.findAll());
 		return "list";
 	}
 
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	@GetMapping("/search")
 	public String searchContact(@RequestParam(value = "search", required = false) String surname, Model model) {
-		
+
 		model.addAttribute("search", contactRep.findBySurname(surname));
 		return "search";
 	}
-	@RequestMapping(value= "/edit", method = RequestMethod.GET)
-	public String editForm(Contact contact,  @RequestParam(value ="id", required = false) Long id, Model model) {
-		
+
+	@GetMapping("/edit")
+	public String editForm(Contact contact, @RequestParam(value = "id", required = false) Long id, Model model) {
+
 		return "edit";
 	}
-	@RequestMapping(value= "/edit", method = RequestMethod.POST)
-	public String editContact(Contact contact, @RequestParam(value ="id", required = false) Long id, Model model) {
-		
+
+	@PostMapping("/edit")
+	public String editContact(Contact contact, @RequestParam(value = "id", required = false) Long id, Model model) {
+
 		model.addAttribute("edit", contactRep.findOne(id));
 		contactRep.save(contact);
-		
+
 		return "result";
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public String deleteForm(Contact contact,@RequestParam(value = "surname", required = false) String surname, Model model) {
-		
+	@GetMapping("/delete")
+	public String deleteForm(Contact contact, @RequestParam(value = "surname", required = false) String surname,
+			Model model) {
+
 		return "delete";
 	}
-	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String deleteContact(Contact contact,@RequestParam (value = "surname", required = false) String surname, Model model) {
-		
+
+	@PostMapping("/delete")
+	public String deleteContact(Contact contact, @RequestParam(value = "surname", required = false) String surname,
+			Model model) {
+
 		model.addAttribute("delete", contactRep.removeBySurname(surname));
 		return "redirect:/";
 	}
