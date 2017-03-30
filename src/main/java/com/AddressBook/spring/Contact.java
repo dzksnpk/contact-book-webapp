@@ -21,17 +21,14 @@ public class Contact {
 	private String email;
 	
 
-	public Contact(String name, String surname, String phoneNumber, String email) {
+	public Contact(Long id, String name, String surname, String phoneNumber, String email) {
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}
 	protected Contact() {}
-	
-	public Contact(Long id) {
-		this.id = id;
-	}
 	
 	public Long getId() {
 		return id;
