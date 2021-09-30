@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>search contact</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Search contacts by surname:</h1>
+	<form th:object="${contact}" th:action="@{/search}" method="get">
+        <input type="text" name="search" id="search" th:value="${search}"/>
+        <input type="submit" value="search"/>
+        <div th:if="${not #lists.isEmpty(search)}">
+            <h2>Contact List</h2>
+            <table class="table table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>phone number:</th>
+                    <th>email:</th>
+                </tr>
+                	<tr th:each="contact: ${search}">
+                    <td th:text="${contact.id}">id</td>
+                    <td th:text="${contact.name}">name</td>
+                    <td th:text="${contact.surname}">surname</td>
+                    <td th:text="${contact.email}">email</td>
+                    <td th:text="${contact.phoneNumber}">phone number</td>
+                </tr>
+            </table>
+            </div>
+    </form>
+	<a href="/add">Add contact</a>
+    <a href="/list">Show list of contacts</a>
+    <a href="/">home</a>
+</body>
+</html>

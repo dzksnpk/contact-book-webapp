@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>contact added/edited</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Result</h1>
+    <p th:text="'id: ' + ${contact.id}" />
+    <p th:text="'name: ' + ${contact.name}" />
+    <p th:text="'surname: ' + ${contact.surname}" />
+    <p th:text="'email: ' + ${contact.email}" />
+    <p th:text="'phone number: ' + ${contact.phoneNumber}" />
+    <a href="/add">Add/edit another contact</a>
+    <a href="/list">Show list of contacts</a>
+    <a href="/">home</a>
+</body>
+</html>
