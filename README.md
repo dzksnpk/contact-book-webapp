@@ -1,2 +1,4 @@
 # contact-book-webapp
-spring boot web + jpa + thymeleaf + h2 database
+spring boot + jpa + thymeleaf
+
+contactbook webapp
