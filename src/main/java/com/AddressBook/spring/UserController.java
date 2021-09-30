@@ -7,19 +7,15 @@ import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class IndexController implements ErrorController {
+public class UserController implements ErrorController {
 
 	private final ContactRepository contactRep;
 
 	@Autowired
-	private IndexController(ContactRepository contactRep) {
+	private UserController(ContactRepository contactRep) {
 		this.contactRep = contactRep;
 	}
 
@@ -60,7 +56,7 @@ public class IndexController implements ErrorController {
 	}
 
 	@GetMapping("/list")
-	public String showAllContacts(Contact contact, Model model) {
+	public String showAllContacts(Model model) {
 		model.addAttribute("contacts", contactRep.findAll());
 		return "list";
 	}
@@ -72,16 +68,16 @@ public class IndexController implements ErrorController {
 		return "search";
 	}
 
-	@GetMapping("/edit")
-	public String editForm(Contact contact, @RequestParam(value = "id", required = false) Long id, Model model) {
-
+	@GetMapping("/edit/{id}")
+	public String editForm(@PathVariable("id") Long id, Contact contact, Model model) {
+		contact.setId(id);
 		return "edit";
 	}
 
-	@PostMapping("/edit")
-	public String editContact(Contact contact, @RequestParam(value = "id", required = false) Long id, Model model) {
-
-		model.addAttribute("edit", contactRep.findOne(id));
+	@PostMapping("/edit/{id}")
+	public String editContact(@PathVariable("id") Long id, Contact contact, Model model) {
+		contactRep.findById(id);
+		model.addAttribute("contact", contact);
 		contactRep.save(contact);
 
 		return "result";

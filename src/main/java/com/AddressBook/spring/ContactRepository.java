@@ -10,6 +10,9 @@ public interface ContactRepository extends CrudRepository<Contact, Long>{
 	
 	@Transactional
 	List<Contact> findBySurname(String surname);
+
+	@Transactional
+	List<Contact> findById(Long id);
 	
     @Transactional
 	List<Contact> removeBySurname(String surname);
